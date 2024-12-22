@@ -1,16 +1,15 @@
 #include <string>
 #include <stack>
 
-using namespace std;
 
-bool is_valid(string xml) {
+bool is_valid(std::string xml) {
 
-    stack<string> opening_tags;
+    std::stack<std::string> opening_tags;
 
     for(int i=0;i < xml.size();i++) {
 
         bool closing_tag = false;
-        string tag;
+        std::string tag;
 
         if(xml[i] == '<') { // if thats a tag
 
@@ -39,24 +38,24 @@ bool is_valid(string xml) {
     return opening_tags.empty();
 }
 
-string makeXML_open_tag(string name, string attributes="") {
+std::string makeXML_open_tag(std::string name, std::string attributes="") {
     return "<"+name+attributes+">";
 }
 
-string makeXML_close_tag(string name) {
+std::string makeXML_close_tag(std::string name) {
     return "</"+name+">";
 }
 
-string corrected_xml(string xml) { 
+std::string corrected_xml(std::string xml) { 
 
-    stack<string> opening_tags;
-    string fixed_xml;
+    std::stack<std::string> opening_tags;
+    std::string fixed_xml;
 
     for(int i=0;i < xml.size();i++) {
 
         bool closing_tag = false;
-        string tag;
-        string attributes;
+        std::string tag;
+        std::string attributes;
 
         if(xml[i] == '<') { // if thats a tag
 
@@ -97,7 +96,7 @@ string corrected_xml(string xml) {
 
     while(!opening_tags.empty()) {
 
-        string tag = opening_tags.top();
+        std::string tag = opening_tags.top();
         fixed_xml += makeXML_close_tag(tag);
         opening_tags.pop();
     }
