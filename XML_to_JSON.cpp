@@ -5,15 +5,15 @@
 #include <sstream>
 #include <fstream>
 
-std::string xmlString(std::string xml) {
-    std::string xmlWithLines = xml;
+string xmlString(string xml) {
+    string xmlWithLines = xml;
     int n = (int)xml.length();
     int j = 0;
     for (int i = 0; i < n; i++) {
         if (i == n - 1) {
-            xmlWithLines[j] = xml[i];
+            xmlWithLines[j++] = xml[i];
             xmlWithLines.resize(xmlWithLines.length() + 1);
-            xmlWithLines[j++] = '\n';
+            xmlWithLines[j] = '\n';
         }
         else if (xml[i] == '>' && xml[i + 1] == '<') {
             xmlWithLines[j++] = xml[i];
