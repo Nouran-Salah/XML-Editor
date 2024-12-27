@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "xml_tree.cpp"
+#include "xml_tree.h"
+#include "XML_to_JSON.h"
 
-std::string xmlString(std::string xml) {
+std::string xmlString(const std::string& xml) {
     std::string xmlWithLines = xml;
     int n = (int)xml.length();
     int j = 0;
@@ -79,5 +80,6 @@ void convertXMLToJSON(const std::string& xml) {
     std::cout << jsonString << std::endl;
     std::cout << "}\n";
 }
+
 
 
