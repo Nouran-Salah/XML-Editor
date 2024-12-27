@@ -4,25 +4,18 @@
 #include <regex>
 #include <sstream>
 #include <fstream>
+#include "xml_tree.h"
 
 
-class Node {
-public:
-    std::string tagName;
-    std::string tagValue;
-    std::vector<Node*> children;
-    Node* parent;
+Node::Node(const std::string& tagName) : tagName(tagName), parent(nullptr) {}
 
-    Node(const std::string& tagName) : tagName(tagName), parent(nullptr) {}
+void Node::addChild(Node* child) {
+    children.push_back(child);
+    child->parent = this;
+}
 
-    void addChild(Node* child) {
-        children.push_back(child);
-        child->parent = this;
-    }
-
-    std::string getTagName() const { return tagName; }
-    std::string getTagValue() const { return tagValue; }
-};
+std::string Node::getTagName() const { return tagName; }
+std::string Node::getTagValue() const { return tagValue; }
 
 std::string extractTagName(const std::string& line) {
     std::regex pattern("<(.*?)>");
