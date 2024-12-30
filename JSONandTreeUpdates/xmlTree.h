@@ -1,5 +1,5 @@
-#ifndef XML_TREE_H
-#define XML_TREE_H
+#ifndef xmlTree_H
+#define xmlTree_H
 
 #include <iostream>
 #include <string>
