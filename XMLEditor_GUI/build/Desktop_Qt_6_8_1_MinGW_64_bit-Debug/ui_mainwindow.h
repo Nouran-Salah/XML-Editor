@@ -47,7 +47,7 @@ public:
     QPlainTextEdit *plainTextEdit_2;
     QPushButton *Compress_Button;
     QPushButton *Minify_Button_2;
-    QPushButton *Solve_Errors_Button;
+    QPushButton *Validate_Button;
     QPushButton *Decompress_Button;
     QLabel *label_4;
     QPushButton *Minify_Button;
@@ -133,10 +133,10 @@ public:
 
         gridLayout->addWidget(Minify_Button_2, 1, 0, 1, 1);
 
-        Solve_Errors_Button = new QPushButton(layoutWidget);
-        Solve_Errors_Button->setObjectName("Solve_Errors_Button");
+        Validate_Button = new QPushButton(layoutWidget);
+        Validate_Button->setObjectName("Validate_Button");
 
-        gridLayout->addWidget(Solve_Errors_Button, 0, 3, 1, 1);
+        gridLayout->addWidget(Validate_Button, 0, 3, 1, 1);
 
         Decompress_Button = new QPushButton(layoutWidget);
         Decompress_Button->setObjectName("Decompress_Button");
@@ -193,7 +193,7 @@ public:
         Prettify_Button->setText(QCoreApplication::translate("MainWindow", "Prettify", nullptr));
         Compress_Button->setText(QCoreApplication::translate("MainWindow", "Compress", nullptr));
         Minify_Button_2->setText(QCoreApplication::translate("MainWindow", "Minify", nullptr));
-        Solve_Errors_Button->setText(QCoreApplication::translate("MainWindow", "Solve Errors", nullptr));
+        Validate_Button->setText(QCoreApplication::translate("MainWindow", "Validate", nullptr));
         Decompress_Button->setText(QCoreApplication::translate("MainWindow", "Decompress", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "Output of Operation on XML File", nullptr));
         Minify_Button->setText(QCoreApplication::translate("MainWindow", "Minify", nullptr));

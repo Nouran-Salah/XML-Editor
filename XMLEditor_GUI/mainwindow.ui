@@ -98,9 +98,9 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="QPushButton" name="Solve_Errors_Button">
+          <widget class="QPushButton" name="Validate_Button">
            <property name="text">
-            <string>Solve Errors</string>
+            <string>Validate</string>
            </property>
           </widget>
          </item>

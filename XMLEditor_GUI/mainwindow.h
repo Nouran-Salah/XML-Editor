@@ -34,6 +34,10 @@ private slots:
 
     void on_Minify_Button_clicked();
 
+    void on_Validate_Button_clicked();
+
+    void on_Minify_Button_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
