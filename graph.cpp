@@ -71,7 +71,7 @@ void buildGraph(TreeNode* root, map<int, vector<int>>& graph) {
 }
 
 // Function to print the graph
-void printGraph(const map<int, vector<int>>& graph) {
+/*void printGraph(const map<int, vector<int>>& graph) {
     for (const auto& [user, followers] : graph) {
         cout << "User " << user << " is followed by: ";
         for (int follower : followers) {
@@ -79,18 +79,122 @@ void printGraph(const map<int, vector<int>>& graph) {
         }
         cout << endl;
     }
+}*/
+
+// Function to build a map with user ID as the key and name as the value
+void buildIdNameMap(TreeNode* root, map<int, string>& idNameMap) {
+    if (root->tagName == "user") {
+        int userId = -1;
+        string userName;
+
+        for (TreeNode* child : root->children) {
+            if (child->tagName == "id") {
+                userId = stoi(child->value);
+            } else if (child->tagName == "name") {
+                userName = child->value;
+            }
+        }
+        if (userId != -1 && !userName.empty()) {
+            idNameMap[userId] = userName;
+        }
+    }
+
+    for (TreeNode* child : root->children) {
+        buildIdNameMap(child, idNameMap);
+    }
 }
 
-int main() {
-    string xml = "<users><user><id>1</id><name>Ahmed Ali</name><posts>...</posts><followers><follower><id>2</id></follower><follower><id>3</id></follower></followers></user><user><id>2</id><name>Yasser Ahmed</name><posts>...</posts><followers><follower><id>1</id></follower></followers></user><user><id>3</id><name>Mohamed Sherif</name><posts>...</posts><followers><follower><id>1</id></follower></followers></user></users>";
-    size_t pos = 0;
+// Function to find the most influential users
+vector<pair<int, string>> findMostInfluentialUsers(const map<int, vector<int>>& graph, const map<int, string>& idNameMap) {
+    int maxFollowers = 0;
+    vector<pair<int, string>> mostInfluentialUsers;
 
-    TreeNode* root = parseXML(xml, pos);
+    for (const auto& [userId, followers] : graph) {
+        if (followers.size() > maxFollowers) {
+            maxFollowers = followers.size();
+        }
+    }
+
+    for (const auto& [userId, followers] : graph) {
+        if (followers.size() == maxFollowers) {
+            mostInfluentialUsers.push_back({userId, idNameMap.at(userId)});
+        }
+    }
+
+    return mostInfluentialUsers;
+}
+
+// Function to build the following map
+void buildFollowingMap(const map<int, vector<int>>& graph, map<int, vector<int>>& followingMap) {
+    for (const auto& [userId, followers] : graph) {
+        for (int followerId : followers) {
+            followingMap[followerId].push_back(userId);
+        }
+    }
+}
+
+// Function to find the most active users
+vector<pair<int, string>> findMostActiveUsers(const map<int, vector<int>>& graph, const map<int, string>& idNameMap, const map<int, vector<int>>& followingMap) {
+    int maxConnections = 0;
+    vector<pair<int, string>> mostActiveUsers;
+
+    for (const auto& [userId, followers] : graph) {
+        int totalConnections = followers.size();
+        if (followingMap.count(userId) > 0) {
+            totalConnections += followingMap.at(userId).size();
+        }
+
+        if (totalConnections > maxConnections) {
+            maxConnections = totalConnections;
+            mostActiveUsers = {{userId, idNameMap.at(userId)}};
+        } else if (totalConnections == maxConnections) {
+            mostActiveUsers.push_back({userId, idNameMap.at(userId)});
+        }
+    }
+
+    return mostActiveUsers;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc != 4 || string(argv[2]) != "-i") {
+        cerr << "Usage: " << argv[0] << " [most_influencer|most_active] -i <input_file.xml>\n";
+        return 1;
+    }
+
+    string command = argv[1];
+    string fileName = argv[3];
+
+    // Read the XML file into a string
+    string xmlContent = readFile(fileName);
+
+    size_t pos = 0;
+    TreeNode* root = parseXML(xmlContent, pos);
 
     map<int, vector<int>> graph;
-    buildGraph(root, graph);
+    map<int, string> idNameMap;
 
-    printGraph(graph);
+    buildGraph(root, graph);
+    buildIdNameMap(root, idNameMap);
+
+    if (command == "most_influencer") {
+        vector<pair<int, string>> mostInfluentialUsers = findMostInfluentialUsers(graph, idNameMap);
+        cout << "Most Influential Users:\n";
+        for (const auto& user : mostInfluentialUsers) {
+            cout << "ID: " << user.first << ", Name: " << user.second << "\n";
+        }
+    } else if (command == "most_active") {
+        map<int, vector<int>> followingMap;
+        buildFollowingMap(graph, followingMap);
+
+        vector<pair<int, string>> mostActiveUsers = findMostActiveUsers(graph, idNameMap, followingMap);
+        cout << "Most Active Users:\n";
+        for (const auto& user : mostActiveUsers) {
+            cout << "ID: " << user.first << ", Name: " << user.second << "\n";
+        }
+    } else {
+        cerr << "Invalid command. Use 'most_influencer' or 'most_active'.\n";
+        return 1;
+    }
 
     return 0;
 }
