@@ -10,7 +10,7 @@
 #include <iostream> // For std::cout (optional)
 #include <QStack>
 #include "xml_tree.h"
-
+#include <QString>
 #include<iostream>
 #include<string>
 #include<unordered_map>
@@ -391,8 +391,7 @@ void prettifyXML(const std::string& inputFile, const std::string& outputFile) {
     std::cout << "Formatted XML saved to: " << outputFile << std::endl;
 }
 
-#include <QString>
-#include <QStack>
+
 
 bool is_valid(QString xml) {
     QStack<QString> opening_tags;
