@@ -4,8 +4,8 @@
 #include <sstream>
 using namespace std;
 
-string xmlString(string xml) {
-    string xmlWithLines = xml;
+std::string xmlString(const std::string& xml) {
+    std::string xmlWithLines = xml;
     int n = (int)xml.length();
     int j = 0;
     for (int i = 0; i < n; i++) {
