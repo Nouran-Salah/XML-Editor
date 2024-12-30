@@ -1,5 +1,5 @@
-#ifndef XML_to_JSON_H
-#define XML_to_JSON_H
+#ifndef xml2json_H
+#define xml2json_H
 
 #include <string>
 
