@@ -16,6 +16,7 @@ void Node::addChild(Node* child) {
 std::string Node::getTagName() const { return tagName; }
 std::string Node::getTagValue() const { return tagValue; }
 
+//updated function
 string extractTagName(const string& line) {
     size_t start = line.find('<');
     size_t end = line.find('>');
@@ -25,6 +26,7 @@ string extractTagName(const string& line) {
     return "";
 }
 
+//updated function
 string extractTagValue(const string& line, const string& tagName) {
     string startTag = "<" + tagName + ">";
     string endTag = "</" + tagName + ">";
