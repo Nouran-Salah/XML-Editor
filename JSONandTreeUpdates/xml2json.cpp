@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include "xmlTree.h"
+#include "xml2json.h"
 using namespace std;
 
 std::string xmlString(const std::string& xml) {
@@ -26,94 +28,6 @@ std::string xmlString(const std::string& xml) {
     return xmlWithLines;
 }
 
-class Node {
-public:
-    std::string tagName;
-    std::string tagValue;
-    std::vector<Node*> children;
-    Node* parent;
-
-    Node(const std::string& tagName) : tagName(tagName), parent(nullptr) {}
-
-    void addChild(Node* child) {
-        children.push_back(child);
-        child->parent = this;
-    }
-
-    std::string getTagName() const { return tagName; }
-    std::string getTagValue() const { return tagValue; }
-};
-
-string extractTagName(const string& line) {
-    size_t start = line.find('<');
-    size_t end = line.find('>');
-    if (start != string::npos && end != string::npos && end > start + 1) {
-        return line.substr(start + 1, end - start - 1);
-    }
-    return "";
-}
-
-string extractTagValue(const string& line, const string& tagName) {
-    string startTag = "<" + tagName + ">";
-    string endTag = "</" + tagName + ">";
-    size_t start = line.find(startTag);
-    size_t end = line.find(endTag);
-    if (start != string::npos && end != string::npos) {
-        return line.substr(start + startTag.length(), end - start - startTag.length());
-    }
-    return "";
-}
-
-Node* parseXML(const string& xml) {
-    Node* root = nullptr;
-    Node* currentNode = nullptr;
-    string currentText;
-
-    istringstream iss(xml);
-    string line;
-
-    while (getline(iss, line)) {
-        if (line.find('<') != string::npos) {
-            string tagName = extractTagName(line);
-
-            if (tagName.front() == '/') {
-                if (currentNode) {
-                    currentNode->tagValue = currentText;
-                    currentNode = currentNode->parent;
-                }
-            }
-            else {
-                if (line.find('>') != line.rfind('>')) { // Opening and closing tag on the same line
-                    string tagValue = extractTagValue(line, tagName);
-                    Node* newNode = new Node(tagName);
-                    newNode->tagValue = tagValue;
-                    if (currentNode) {
-                        currentNode->addChild(newNode);
-                    }
-                    else {
-                        root = newNode;
-                    }
-                }
-                else {
-                    Node* newNode = new Node(tagName);
-                    if (currentNode) {
-                        currentNode->addChild(newNode);
-                    }
-                    else {
-                        root = newNode;
-                    }
-                    currentNode = newNode;
-                }
-            }
-            currentText = "";
-        }
-        else {
-            currentText += line + "\n";
-        }
-    }
-
-    return root;
-}
 
 void printJsonTree(const Node* node, int level, string& jsonBuilder, bool is_multilevel) {
     string indentation = "    ";
