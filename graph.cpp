@@ -39,6 +39,14 @@ TreeNode* parseXML(const string& xml, size_t& pos) {
     return node;
 }
 
+// Function to read a file into a string
+string readFile(const string& fileName) {
+    ifstream file(fileName);
+    stringstream buffer;
+    buffer << file.rdbuf();
+    return buffer.str();
+}
+
 // Function to traverse tree and extract graph data
 void buildGraph(TreeNode* root, map<int, vector<int>>& graph) {
     if (root->tagName == "user") {
