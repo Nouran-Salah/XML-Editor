@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <regex>
 #include <sstream>
 #include <fstream>
 #include "xml_tree.h"
@@ -17,24 +16,29 @@ void Node::addChild(Node* child) {
 std::string Node::getTagName() const { return tagName; }
 std::string Node::getTagValue() const { return tagValue; }
 
+//updated function
 std::string extractTagName(const std::string& line) {
-    std::regex pattern("<(.*?)>");
-    std::smatch matches;
-    if (std::regex_search(line, matches, pattern)) {
-        return matches[1].str();
+    size_t start = line.find('<');
+    size_t end = line.find('>');
+    if (start != std::string::npos && end != std::string::npos && end > start + 1) {
+        return line.substr(start + 1, end - start - 1);
     }
     return "";
 }
 
+//updated function
 std::string extractTagValue(const std::string& line, const std::string& tagName) {
-    std::string pattern = "<" + tagName + ">(.*?)</" + tagName + ">";
-    std::regex reg(pattern);
-    std::smatch matches;
-    if (std::regex_search(line, matches, reg)) {
-        return matches[1].str();
+    std::string startTag = "<" + tagName + ">";
+    std::string endTag = "</" + tagName + ">";
+    size_t start = line.find(startTag);
+    size_t end = line.find(endTag);
+    if (start != std::string::npos && end != std::string::npos) {
+        return line.substr(start + startTag.length(), end - start - startTag.length());
     }
     return "";
 }
+
+
 
 Node* parseXML(const std::string& xml) {
     Node* root = nullptr;
