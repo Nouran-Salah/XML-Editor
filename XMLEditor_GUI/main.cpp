@@ -598,6 +598,7 @@ void printJsonTree(const Node* node, int level, std::string& jsonBuilder, bool i
         jsonBuilder += "\n";
     }
     jsonBuilder += indent + indentation + "]\n" + indent + "}";
+    jsonBuilder = "{\n" + jsonBuilder + "\n}\n";
 }
 
 void convertXMLToJSON(const std::string& xml, std::string& jsonString) {
