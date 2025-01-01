@@ -12,15 +12,13 @@ bool is_valid(std::string xml) {
         std::string tag;
 
         if(xml[i] == '<') { // if thats a tag
+            if(xml[i+1] == '?' || xml[i+1] == '!') continue;
+                
+            closing_tag = xml[i+1] == '/';
 
-            for(i++;xml[i] != '>' && xml[i] != ' ';i++) { // extract tag name
+            for(i += 1 + closing_tag;xml[i] != '>' && !isspace(xml[i]);i++) { // extract tag name
 
-                if(xml[i] == '/') { // if closing tag
-                    closing_tag = true;
-                }else {
-
-                    tag += xml[i];
-                }
+                tag += xml[i];                
             }
         }
 
@@ -59,18 +57,21 @@ std::string corrected_xml(std::string xml) {
 
         if(xml[i] == '<') { // if thats a tag
 
-            for(i++;xml[i] != '>';i++) { // extract tag name
+            if(xml[i+1] == '?' || xml[i+1] == '!') {
+                fixed_xml += xml[i];
+                continue;
+            }
 
-                if(xml[i] == '/') { // if closing tag
-                    closing_tag = true;
+            closing_tag = xml[i+1] == '/';
+            
+            for(i += 1 + closing_tag;xml[i] != '>';i++) { // extract tag name
+
+                if(attributes.size() || xml[i] == ' ') {
+                    attributes += xml[i];
                 }else {
-                    
-                    if(attributes.size() || xml[i] == ' ') {
-                        attributes += xml[i];
-                    }else {
-                        tag += xml[i];
-                    }
+                    tag += xml[i];
                 }
+                
             }
         }else {
             fixed_xml += xml[i];
