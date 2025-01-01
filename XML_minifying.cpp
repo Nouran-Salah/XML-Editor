@@ -17,7 +17,7 @@ void minifyXML(string inputFile, string outputFile) {
     char c;
     bool insideTag = false;
     bool insideText = false;
-    bool insideComment = false;
+    bool insideComment = false;
     string textBuffer = "";
 
     while (input.get(c)) {
@@ -41,8 +41,8 @@ void minifyXML(string inputFile, string outputFile) {
                         insideComment = true; // Enter comment mode
                         continue; // Skip writing comments to output
                     }
-                }
-            } 
+               }
+} 
         if (insideText) {
                 // Trim leading and trailing spaces and output text
                 while (!textBuffer.empty() && isspace(textBuffer.front())) {
@@ -83,13 +83,14 @@ void minifyXML(string inputFile, string outputFile) {
     }
     if (!textBuffer.empty()) {
         output << textBuffer;
-    }
+}
     input.close();
     output.close();
     cout << "Minified XML saved to " << outputFile << endl;
+}
    
 // Main function for command-line arguments
-int main(int argc, char* argv[]) {
+/*int main(int argc, char* argv[]) {
     if (argc < 6) {
         cout << "Usage: xml_editor mini -i input_file.xml -o output_file.xml" << endl;
         return 1;
@@ -108,7 +109,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    return 0;
+return0;
 } 
-}
+}*/
 

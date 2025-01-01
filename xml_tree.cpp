@@ -1,8 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <fstream>
+
 #include "xml_tree.h"
 
 
@@ -17,22 +13,22 @@ std::string Node::getTagName() const { return tagName; }
 std::string Node::getTagValue() const { return tagValue; }
 
 //updated function
-string extractTagName(const string& line) {
+std::string extractTagName(const std::string& line) {
     size_t start = line.find('<');
     size_t end = line.find('>');
-    if (start != string::npos && end != string::npos && end > start + 1) {
+    if (start != std::string::npos && end != std::string::npos && end > start + 1) {
         return line.substr(start + 1, end - start - 1);
     }
     return "";
 }
 
 //updated function
-string extractTagValue(const string& line, const string& tagName) {
-    string startTag = "<" + tagName + ">";
-    string endTag = "</" + tagName + ">";
+std::string extractTagValue(const std::string& line, const std::string& tagName) {
+    std::string startTag = "<" + tagName + ">";
+    std::string endTag = "</" + tagName + ">";
     size_t start = line.find(startTag);
     size_t end = line.find(endTag);
-    if (start != string::npos && end != string::npos) {
+    if (start != std::string::npos && end != std::string::npos) {
         return line.substr(start + startTag.length(), end - start - startTag.length());
     }
     return "";

@@ -1,8 +1,5 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-using namespace std;
+#include "XML_to_JSON.h"
+#include "xml_tree.h"
 
 string xmlString(const string &xml) {
     string xmlWithLines = xml;
@@ -26,7 +23,7 @@ string xmlString(const string &xml) {
     return xmlWithLines;
 }
 
-class Node {
+/*class Node {
 public:
     std::string tagName;
     std::string tagValue;
@@ -42,7 +39,17 @@ public:
 
     std::string getTagName() const { return tagName; }
     std::string getTagValue() const { return tagValue; }
-};
+};*/
+
+/*Node::Node(const std::string& tagName) : tagName(tagName), parent(nullptr) {}
+
+void Node::addChild(Node* child) {
+    children.push_back(child);
+    child->parent = this;
+}
+
+std::string Node::getTagName() const { return tagName; }
+std::string Node::getTagValue() const { return tagValue; }
 
 string extractTagName(const string& line) {
     size_t start = line.find('<');
@@ -113,7 +120,7 @@ Node* parseXML(const string& xml) {
     }
 
     return root;
-}
+}*/
 
 void printJsonTree(const Node* node, int level, string& jsonBuilder, bool is_multilevel) {
     string indentation = "    ";

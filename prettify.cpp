@@ -74,11 +74,11 @@ void prettifyXML(const std::string& inputFile, const std::string& outputFile) {
 }
 
 
-int main() {
+/*int main() {
     std::string inputFile = "C:\\Users\\20109\\Desktop\\data_structura_project\\xmlinonestring.xml";   // Input XML file path
     std::string outputFile = "C:\\Users\\20109\\Desktop\\data_structura_project\\afterBeutifying.xml"; // Output XML file path
 
     prettifyXML(inputFile, outputFile);
 
     return 0;
-}
+}*/
