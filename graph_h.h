@@ -9,7 +9,7 @@
 #include <sstream>
 #include <set>
 #include <algorithm>
-#include "visualization.cpp"
+#include "visualization.h"
 #include "XML_minifying.h"
 #include "file_processing.h"
 #include "validate_fix.h"
