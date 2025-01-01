@@ -479,17 +479,23 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (command == "search") {
-        string searchType = argv[2];
-        string query = argv[3];
+    string searchType = argv[2];
+    string query = argv[3];
 
-        if (searchType == "-w") {
-            cout << "The word '" << query << "' is found in:\n";
-            searchByWord(root, query);
+    if (searchType == "-w") {
+        cout << "The word '" << query << "' is found in:\n";
+        vector<string> wordResults = searchByWord(root, query);
+        for (const string& result : wordResults) {
+            cout << result << endl;
         }
-        else if (searchType == "-t") {
-            cout << "The topic '" << query << "' is found in:\n";
-            searchByTopic(root, query);
+    }
+    else if (searchType == "-t") {
+        cout << "The topic '" << query << "' is found in:\n";
+        vector<string> topicResults = searchByTopic(root, query);
+        for (const string& result : topicResults) {
+            cout << result << endl;
         }
+    }
         else {
             cerr << "Invalid search type. Use '-w' for word search or '-t' for topic search.\n";
         }
