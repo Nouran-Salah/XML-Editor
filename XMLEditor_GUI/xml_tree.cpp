@@ -38,8 +38,6 @@ std::string extractTagValue(const std::string& line, const std::string& tagName)
     return "";
 }
 
-
-
 Node* parseXML(const std::string& xml) {
     Node* root = nullptr;
     Node* currentNode = nullptr;
