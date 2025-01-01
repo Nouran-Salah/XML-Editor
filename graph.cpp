@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "visualization.cpp"
+
 using namespace std;
 
 // Structure to represent a node in the tree
@@ -199,7 +201,12 @@ int main(int argc, char* argv[]) {
         for (const auto& user : mostActiveUsers) {
             cout << "ID: " << user.first << ", Name: " << user.second << "\n";
         }
-    } else {
+    } else if(command == "draw") {
+        if(visualize_graph(graph, fileName)) {
+            cout << "process failed: graphviz is either not installed or have missing configurations.\n";
+        }
+
+    }else {
         cerr << "Invalid command. Use 'most_influencer' or 'most_active'.\n";
         return 1;
     }
