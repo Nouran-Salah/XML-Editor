@@ -17,9 +17,9 @@ int visualize_graph(const std::map<int, std::vector<int>>& graph, std::string ou
         }
     }
     
-    write_file("digraph {\n" + structure.str() + "}", output_file+".gv");
-        
-    return system(("dot -Tpng graph.gv -o " +output_file + ".png").data());
+    write_file("digraph {\n" + structure.str() + "}", "graph.gv");
+
+    return system(("dot -Tpng graph.gv -o " + output_file + ".png").data());
 }
 
 int visualize_graph(const std::map<int, std::vector<int>>& graph) {
