@@ -6,7 +6,7 @@
 #include <sstream>
 #include <set>
 #include <algorithm>
-#include "visualization.cpp"
+#include "visualization.h"
 #include "XML_minifying.h"
 #include "file_processing.h"
 #include "validate_fix.h"
@@ -546,6 +546,13 @@ int main(int argc, char* argv[]) {
             }
         }
     }
+    else if (command == "draw") {
+       if (visualize_graph(graph, argv[5])) {
+            cout << "process failed: graphviz is either not installed or have missing configurations.\n";
+        }
+
+    }
+
     else {
         cerr << "Invalid command. Supported commands are [most_influencer|most_active|mutual|suggest|search].\n";
         return 1;

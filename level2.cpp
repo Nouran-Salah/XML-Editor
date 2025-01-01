@@ -289,7 +289,7 @@ void searchByWord(TreeNode* root, const string& word) {
     }
 }
 
-/int main(int argc, char argv[]) {
+int main(int argc, char argv[]) {
     // Ensure there are at least 4 arguments (command, -i, and file)
     if (argc < 4) {
         cerr << "Usage: " << argv[0] << " [most_influencer|most_active|mutual|suggest|search] -i <input_file.xml> [-ids <id1,id2,...>|-id <id>|-w <word>|-t <topic>]\n";
@@ -425,7 +425,7 @@ void searchByWord(TreeNode* root, const string& word) {
     }
 
     return 0;
-}*/
+}
 int main(int argc, char* argv[]) {
   
     string command = argv[1];
