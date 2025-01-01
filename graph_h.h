@@ -35,9 +35,10 @@ void buildFollowingMap(const map<int, vector<int>>& graph, map<int, vector<int>>
 vector<pair<int, string>> findMostActiveUsers(const map<int, vector<int>>& graph, const map<int, string>& idNameMap, const map<int, vector<int>>& followingMap);
 void suggestUsersToFollowForId(const map<int, vector<int>>& graph, int userId);
 vector<int> findMutualFollowers(const map<int, vector<int>>& graph, const vector<int>& users, size_t n);
-string toLower(const string& str);
-void searchByTopic(TreeNode* root, const string& topic, vector<string>& bodies);
-void searchByWord(TreeNode* root, const string& word, vector<string>& bodies);
-void searchByWord(TreeNode* root, const string& word);
+std::string toLower(const std::string& str);
+void searchByWordHelper(TreeNode* root, const std::string& word, std::vector<std::string>& bodies);
+std::vector<std::string> searchByWord(TreeNode* root, const std::string& word);
+void searchByTopicHelper(TreeNode* root, const std::string& topic, std::vector<std::string>& bodies);
+std::vector<std::string> searchByTopic(TreeNode* root, const std::string& topic);
 
 #endif // HEADER_H
