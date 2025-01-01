@@ -22,8 +22,6 @@ private slots:
 
     void on_Prettify_Button_clicked();
 
-    void on_Decompress_Button_2_clicked();
-
     void on_Save_Button_clicked();
 
     void on_Decompress_Button_clicked();
@@ -36,21 +34,21 @@ private slots:
 
     void on_Validate_Button_clicked();
 
-    void on_Minify_Button_2_clicked();
-
     void on_MostInfluential_clicked();
-
-    void on_pushButton_2_clicked();
 
     void on_MostActive_clicked();
 
-    void on_pushButton_3_clicked();
-
     void on_MutualFollowers_clicked();
 
-    void on_pushButton_clicked();
-
     void on_Suggest_clicked();
+
+    void on_SearchByWord_clicked();
+
+    void on_SearchByTopic_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void on_DrawGraph_clicked();
 
 private:
     Ui::MainWindow *ui;

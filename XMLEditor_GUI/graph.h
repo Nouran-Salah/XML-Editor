@@ -33,8 +33,10 @@ vector<pair<int, string>> findMostActiveUsers(const map<int, vector<int>>& graph
 vector<int> suggestUsersToFollowForId(const map<int, vector<int>>& graph, int userId, const map<int, string>& idNameMap);
 vector<int> findMutualFollowers(const map<int, vector<int>>& graph, const vector<int>& users, size_t n);
 string toLower(const string& str);
-void searchByTopic(TreeNode* root, const string& topic, vector<string>& bodies);
-void searchByWord(TreeNode* root, const string& word, vector<string>& bodies);
-void searchByWord(TreeNode* root, const string& word);
+void searchByTopicHelper(TreeNode* root, const string& topic, vector<string>& bodies);
+vector<string> searchByTopic(TreeNode* root, const string& topic);
+vector<string> searchByTopic(TreeNode* root, const string& topic);
+void searchByWordHelper(TreeNode* root, const string& word, vector<string>& bodies);
+vector<string> searchByWord(TreeNode* root, const string& word);
 
 #endif // HEADER_H

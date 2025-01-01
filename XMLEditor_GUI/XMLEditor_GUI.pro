@@ -13,7 +13,9 @@ SOURCES += \
     Formatting_XML.cpp \
     Validate_XML.cpp \
     XML_To_JSON.cpp \
+    file_processing.cpp \
     graph.cpp \
+    graph_visualization.cpp \
     main.cpp \
     mainwindow.cpp \
     xml_tree.cpp
@@ -23,7 +25,9 @@ HEADERS += \
     Formatting_XML.h \
     Validate_XML.h \
     XML_To_JSON.h \
+    file_processing.h \
     graph.h \
+    graph_visualization.h \
     mainwindow.h \
     xml_tree.h
 

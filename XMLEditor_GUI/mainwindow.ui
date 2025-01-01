@@ -123,7 +123,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="DrawGraph">
            <property name="text">
             <string>Draw Graph</string>
            </property>
@@ -179,6 +179,19 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>22</x>
+      <y>280</y>
+      <width>131</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>graphDisplayLabel</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

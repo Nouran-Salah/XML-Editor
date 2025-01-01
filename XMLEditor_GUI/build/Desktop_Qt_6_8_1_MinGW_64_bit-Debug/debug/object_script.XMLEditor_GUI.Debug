@@ -1,0 +1,11 @@
+debug/Compress_Decompress_XML.o
+debug/Formatting_XML.o
+debug/Validate_XML.o
+debug/XML_To_JSON.o
+debug/file_processing.o
+debug/graph.o
+debug/graph_visualization.o
+debug/main.o
+debug/mainwindow.o
+debug/xml_tree.o
+debug/moc_mainwindow.o

@@ -1,0 +1,11 @@
+release/Compress_Decompress_XML.o
+release/Formatting_XML.o
+release/Validate_XML.o
+release/XML_To_JSON.o
+release/file_processing.o
+release/graph.o
+release/graph_visualization.o
+release/main.o
+release/mainwindow.o
+release/xml_tree.o
+release/moc_mainwindow.o

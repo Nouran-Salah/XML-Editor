@@ -50,7 +50,7 @@ public:
     QLabel *OperationOutput;
     QPushButton *Compress_Button;
     QPushButton *Decompress_Button;
-    QPushButton *pushButton_4;
+    QPushButton *DrawGraph;
     QPushButton *MostActive;
     QPushButton *Validate_Button;
     QPlainTextEdit *plainTextEdit_2;
@@ -58,6 +58,7 @@ public:
     QPushButton *SearchByWord;
     QPushButton *SearchByTopic;
     QPushButton *Save_Button;
+    QLabel *label_4;
     QMenuBar *menubar;
     QMenu *menuSave;
     QStatusBar *statusbar;
@@ -154,10 +155,10 @@ public:
 
         gridLayout->addWidget(Decompress_Button, 1, 1, 1, 2);
 
-        pushButton_4 = new QPushButton(layoutWidget);
-        pushButton_4->setObjectName("pushButton_4");
+        DrawGraph = new QPushButton(layoutWidget);
+        DrawGraph->setObjectName("DrawGraph");
 
-        gridLayout->addWidget(pushButton_4, 2, 3, 1, 1);
+        gridLayout->addWidget(DrawGraph, 2, 3, 1, 1);
 
         MostActive = new QPushButton(layoutWidget);
         MostActive->setObjectName("MostActive");
@@ -200,6 +201,9 @@ public:
 
         verticalLayout_2->addWidget(Save_Button);
 
+        label_4 = new QLabel(centralwidget);
+        label_4->setObjectName("label_4");
+        label_4->setGeometry(QRect(22, 280, 131, 20));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName("menubar");
@@ -233,13 +237,14 @@ public:
         OperationOutput->setText(QCoreApplication::translate("MainWindow", "Output of Operation on XML File", nullptr));
         Compress_Button->setText(QCoreApplication::translate("MainWindow", "Compress", nullptr));
         Decompress_Button->setText(QCoreApplication::translate("MainWindow", "Decompress", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "Draw Graph", nullptr));
+        DrawGraph->setText(QCoreApplication::translate("MainWindow", "Draw Graph", nullptr));
         MostActive->setText(QCoreApplication::translate("MainWindow", "Find Most Active User", nullptr));
         Validate_Button->setText(QCoreApplication::translate("MainWindow", "Validate", nullptr));
         Suggest->setText(QCoreApplication::translate("MainWindow", "Suggest", nullptr));
         SearchByWord->setText(QCoreApplication::translate("MainWindow", "Search by word", nullptr));
         SearchByTopic->setText(QCoreApplication::translate("MainWindow", "Search by topic", nullptr));
         Save_Button->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "graphDisplayLabel", nullptr));
         menuSave->setTitle(QCoreApplication::translate("MainWindow", "Save", nullptr));
     } // retranslateUi
 

@@ -1,19 +1,6 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <fstream>
-#include <map>
-#include <algorithm>
-#include "visualization.h"
-#include "validate_fix.h"
-#include "file_processing.h"
-#include "XML_minifying.h"
-
-
-// Structure to represent a node in the tree
 #include "graph.h"
-using namespace std;
+#include <QString>
+#include <QDebug>
 
 TreeNode* parseXML(const string& xml, size_t& pos) {
     size_t start = xml.find('<', pos);
@@ -27,11 +14,9 @@ TreeNode* parseXML(const string& xml, size_t& pos) {
         if (xml[pos] == '<' && xml[pos + 1] == '/') {
             pos = xml.find('>', pos) + 1;
             break;
-        }
-        else if (xml[pos] == '<') {
+        } else if (xml[pos] == '<') {
             node->children.push_back(parseXML(xml, pos));
-        }
-        else {
+        } else {
             size_t valueEnd = xml.find('<', pos);
             node->value = xml.substr(pos, valueEnd - pos);
             pos = valueEnd;
@@ -55,8 +40,7 @@ void buildGraph(TreeNode* root, map<int, vector<int>>& graph) {
         for (TreeNode* child : root->children) {
             if (child->tagName == "id") {
                 userId = stoi(child->value);
-            }
-            else if (child->tagName == "followers") {
+            } else if (child->tagName == "followers") {
                 for (TreeNode* follower : child->children) {
                     for (TreeNode* followerDetail : follower->children) {
                         if (followerDetail->tagName == "id") {
@@ -84,8 +68,7 @@ void buildIdNameMap(TreeNode* root, map<int, string>& idNameMap) {
         for (TreeNode* child : root->children) {
             if (child->tagName == "id") {
                 userId = stoi(child->value);
-            }
-            else if (child->tagName == "name") {
+            } else if (child->tagName == "name") {
                 userName = child->value;
             }
         }
@@ -111,7 +94,7 @@ vector<pair<int, string>> findMostInfluentialUsers(const map<int, vector<int>>& 
 
     for (const auto& [userId, followers] : graph) {
         if (followers.size() == maxFollowers) {
-            mostInfluentialUsers.push_back({ userId, idNameMap.at(userId) });
+            mostInfluentialUsers.push_back({userId, idNameMap.at(userId)});
         }
     }
 
@@ -138,10 +121,9 @@ vector<pair<int, string>> findMostActiveUsers(const map<int, vector<int>>& graph
 
         if (totalConnections > maxConnections) {
             maxConnections = totalConnections;
-            mostActiveUsers = { {userId, idNameMap.at(userId)} };
-        }
-        else if (totalConnections == maxConnections) {
-            mostActiveUsers.push_back({ userId, idNameMap.at(userId) });
+            mostActiveUsers = {{userId, idNameMap.at(userId)}};
+        } else if (totalConnections == maxConnections) {
+            mostActiveUsers.push_back({userId, idNameMap.at(userId)});
         }
     }
 
@@ -176,8 +158,7 @@ vector<int> suggestUsersToFollowForId(const map<int, vector<int>>& graph, int us
             suggestedUsers.push_back(suggestion);
             cout << "ID: " << suggestion << ", Name: " << idNameMap.at(suggestion) << "\n";
         }
-    }
-    else {
+    } else {
         cout << "No suggestions for user " << userId << " (" << idNameMap.at(userId) << ").\n";
     }
 
@@ -201,7 +182,7 @@ vector<int> findMutualFollowers(const map<int, vector<int>>& graph, const vector
             mutualFollowers.begin(), mutualFollowers.end(),
             currentFollowers.begin(), currentFollowers.end(),
             inserter(intersection, intersection.begin())
-        );
+            );
         mutualFollowers = move(intersection); // Update mutualFollowers with the intersection
     }
 
@@ -209,15 +190,49 @@ vector<int> findMutualFollowers(const map<int, vector<int>>& graph, const vector
     return vector<int>(mutualFollowers.begin(), mutualFollowers.end());
 }
 
-
-// Convert string to lowercase
 string toLower(const string& str) {
     string lower = str;
     transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
     return lower;
 }
 
-// Function to search for a word in the body of posts and return results
+void searchByTopicHelper(TreeNode* root, const string& topic, vector<string>& bodies) {
+    string lowerTopic = toLower(topic);  // Convert topic to lowercase for case-insensitive search
+
+    // Check if the current node is a post
+    if (root->tagName == "post") {
+        for (TreeNode* child : root->children) {
+            // If the child tag is "body" and the body contains the topic word
+            if (child->tagName == "body" && toLower(child->value).find(lowerTopic) != string::npos) {
+                bodies.push_back(child->value);  // Add the body text to the result
+            }
+        }
+    }
+
+    // Continue searching in all child nodes
+    for (TreeNode* child : root->children) {
+        searchByTopicHelper(child, topic, bodies);  // Recursively search through all children
+    }
+}
+
+
+vector<string> searchByTopic(TreeNode* root, const string& word)
+{
+    vector<string> bodies;
+    searchByWordHelper(root, word, bodies);
+    return bodies;
+    if (bodies.empty()) {
+        cout << "The word '" << word << "' was not found in any post." << endl;
+    } else {
+        cout << "Posts mentioning word '" << word << "':\n";
+        for (size_t i = 0; i < bodies.size(); ++i) {
+            cout << "Post " << (i + 1) << ": " << bodies[i] << endl;
+        }
+    }
+}
+
+
+
 void searchByWordHelper(TreeNode* root, const string& word, vector<string>& bodies) {
     string lowerWord = toLower(word);
     if (root->tagName == "post") {
@@ -238,165 +253,12 @@ vector<string> searchByWord(TreeNode* root, const string& word)
     vector<string> bodies;
     searchByWordHelper(root, word, bodies);
     return bodies;
-}
-
-// Function to search for a specific topic in the posts and return results
-void searchByTopicHelper(TreeNode* root, const string& topic, vector<string>& bodies) {
-    string lowerTopic = toLower(topic);
-
-    if (root->tagName == "post") {
-        bool topicFound = false;
-
-        for (TreeNode* child : root->children) {
-            if (child->tagName == "topics") {
-                for (TreeNode* topicNode : child->children) {
-                    if (topicNode->tagName == "topic" && toLower(topicNode->value) == lowerTopic) {
-                        topicFound = true;
-                        break;
-                    }
-                }
-            }
+    if (bodies.empty()) {
+        cout << "The word '" << word << "' was not found in any post." << endl;
+    } else {
+        cout << "Posts mentioning word '" << word << "':\n";
+        for (size_t i = 0; i < bodies.size(); ++i) {
+            cout << "Post " << (i + 1) << ": " << bodies[i] << endl;
         }
-        if (topicFound) {
-            for (TreeNode* child : root->children) {
-                if (child->tagName == "body") {
-                    bodies.push_back(child->value);
-                }
-            }
-        }
-    }
-
-    for (TreeNode* child : root->children) {
-        searchByTopicHelper(child, topic, bodies);
-    }
-}
-
-vector<string> searchByTopic(TreeNode* root, const string& topic) {
-    vector<string> bodies;
-    searchByTopicHelper(root, topic, bodies);
-    return bodies;
-}
-
-
-
-
-
-int main(int argc, char* argv[]) {
-
-    string command = argv[1];
-    string inputFile = argv[command == "search" ? 5 : 3];
-
-    string xmlContent;
-
-    try {
-        write_file(corrected_xml(readFile(inputFile)), "temp.xml");
-        minifyXML("temp.xml", "temp2.xml");
-        xmlContent = read_file("temp2.xml");
-    }
-    catch (const runtime_error& e) {
-        cerr << e.what() << endl;
-        return 1;
-    }
-
-    size_t pos = 0;
-    TreeNode* root = parseXML(xmlContent, pos);
-
-
-    map<int, vector<int>> graph;
-    map<int, string> idNameMap;
-    buildGraph(root, graph);
-    buildIdNameMap(root, idNameMap);
-
-    // Handle the commands
-    if (command == "most_influencer") {
-        vector<pair<int, string>> mostInfluentialUsers = findMostInfluentialUsers(graph, idNameMap);
-        cout << "Most Influential Users:\n";
-        for (const auto& user : mostInfluentialUsers) {
-            cout << "ID: " << user.first << ", Name: " << user.second << "\n";
-        }
-    }
-    else if (command == "most_active") {
-        map<int, vector<int>> followingMap;
-        buildFollowingMap(graph, followingMap);
-        vector<pair<int, string>> mostActiveUsers = findMostActiveUsers(graph, idNameMap, followingMap);
-        cout << "Most Active Users:\n";
-        for (const auto& user : mostActiveUsers) {
-            cout << "ID: " << user.first << ", Name: " << user.second << "\n";
-        }
-    }
-    if (command == "search") {
-        string searchType = argv[2];
-        string query = argv[3];
-
-        if (searchType == "-w") {
-            cout << "The word '" << query << "' is found in:\n";
-            vector<string> wordResults = searchByWord(root, query);
-            for (const string& result : wordResults) {
-                cout << result << endl;
-            }
-        }
-        else if (searchType == "-t") {
-            cout << "The topic '" << query << "' is found in:\n";
-            vector<string> topicResults = searchByTopic(root, query);
-            for (const string& result : topicResults) {
-                cout << result << endl;
-            }
-        }
-        else {
-            cerr << "Invalid search type. Use '-w' for word search or '-t' for topic search.\n";
-        }
-    }
-    else if (command == "suggest") {
-        if (argc < 6 || string(argv[4]) != "-id") {
-            cerr << "Error: Usage: " << argv[0] << " suggest -i <input_file.xml> -id <id>\n";
-            return 1;
-        }
-
-        // Parse the user ID from the -id flag
-        int userId = stoi(argv[5]);
-
-        // Use the new function to suggest users
-         suggestUsersToFollowForId(graph, userId);
-    }
-    else if (command == "mutual") {
-        if (argc < 6 || string(argv[4]) != "-ids") {
-            cerr << "Error: Usage: " << argv[0] << " mutual -i <input_file.xml> -ids <id1,id2,...> [-n <number>]\n";
-            return 1;
-        }
-
-        // Parse the user IDs from the -ids flag
-        string idsArg = argv[5];
-        vector<int> userIds;
-        stringstream ss(idsArg);
-        string idStr;
-        while (getline(ss, idStr, ',')) {
-            userIds.push_back(stoi(idStr));
-        }
-
-        // Check for the optional -n flag
-        size_t n = userIds.size(); // Default to using all user IDs
-        if (argc >= 8 && string(argv[6]) == "-n") {
-            n = stoi(argv[7]);
-        }
-
-        // Find mutual followers
-        vector<int> mutualFollowers = findMutualFollowers(graph, userIds, n);
-
-        if (mutualFollowers.empty()) {
-            cout << "No mutual followers found.\n";
-        }
-        else {
-            cout << "Mutual Followers:\n";
-            for (int id : mutualFollowers) {
-                cout << "ID: " << id << ", Name: " << idNameMap[id] << "\n";
-            }
-        }
-    }
-    else {
-        cerr << "Invalid command. Supported commands are [most_influencer|most_active|mutual|suggest|search].\n";
-        return 1;
-    }
-
-        return 0;
     }
 }
