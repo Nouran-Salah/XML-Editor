@@ -38,6 +38,20 @@ private slots:
 
     void on_Minify_Button_2_clicked();
 
+    void on_MostInfluential_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_MostActive_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_MutualFollowers_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_Suggest_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

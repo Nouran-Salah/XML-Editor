@@ -66,41 +66,52 @@
        </item>
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="2" column="0" colspan="4">
+         <item row="2" column="2">
+          <widget class="QPushButton" name="MutualFollowers">
+           <property name="text">
+            <string>Find Mutual Followers</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
           <widget class="QPushButton" name="ConvertToJSON_Button">
            <property name="text">
             <string>Convert XML to JSON</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="Minify_Button">
+           <property name="text">
+            <string>Minify</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
           <widget class="QPushButton" name="Prettify_Button">
            <property name="text">
             <string>Prettify</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0" colspan="4">
-          <widget class="QPlainTextEdit" name="plainTextEdit_2"/>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="MostInfluential">
+           <property name="text">
+            <string>Find Most Influential User</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" colspan="4" alignment="Qt::AlignmentFlag::AlignHCenter">
+          <widget class="QLabel" name="OperationOutput">
+           <property name="text">
+            <string>Output of Operation on XML File</string>
+           </property>
+          </widget>
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="Compress_Button">
            <property name="text">
             <string>Compress</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="Minify_Button_2">
-           <property name="text">
-            <string>Minify</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <widget class="QPushButton" name="Validate_Button">
-           <property name="text">
-            <string>Validate</string>
            </property>
           </widget>
          </item>
@@ -111,17 +122,48 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="4" alignment="Qt::AlignmentFlag::AlignHCenter">
-          <widget class="QLabel" name="label_4">
+         <item row="2" column="3">
+          <widget class="QPushButton" name="pushButton_4">
            <property name="text">
-            <string>Output of Operation on XML File</string>
+            <string>Draw Graph</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="0" colspan="2">
-          <widget class="QPushButton" name="Minify_Button">
+         <item row="2" column="1">
+          <widget class="QPushButton" name="MostActive">
            <property name="text">
-            <string>Minify</string>
+            <string>Find Most Active User</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="Validate_Button">
+           <property name="text">
+            <string>Validate</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0" colspan="4">
+          <widget class="QPlainTextEdit" name="plainTextEdit_2"/>
+         </item>
+         <item row="3" column="0">
+          <widget class="QPushButton" name="Suggest">
+           <property name="text">
+            <string>Suggest</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QPushButton" name="SearchByWord">
+           <property name="text">
+            <string>Search by word</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QPushButton" name="SearchByTopic">
+           <property name="text">
+            <string>Search by topic</string>
            </property>
           </widget>
          </item>

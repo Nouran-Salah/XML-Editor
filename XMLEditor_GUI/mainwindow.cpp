@@ -12,7 +12,9 @@
 #include "XML_To_JSON.h"
 #include "Validate_XML.h"
 #include "Formatting_XML.h"
-
+#include "graph.h"
+#include <QInputDialog>
+#include <map>
 using namespace std;
 
 std::unordered_map<string, string> dict;
@@ -109,7 +111,7 @@ void MainWindow::on_Decompress_Button_clicked() {
         return;
     }
 
-   std::string inputPath = inputFile.toStdString();
+    std::string inputPath = inputFile.toStdString();
 
     // Call the decompress function
     std::string decompressed_string = Decompress(compressed_str,dict);
@@ -165,37 +167,37 @@ void MainWindow::on_Prettify_Button_clicked()
 void MainWindow::on_Minify_Button_clicked()
 {
 
-        QString inputFile = QFileDialog::getOpenFileName(this, "Select Input XML File", "C://", "XML Files (*.xml);;All Files (*.*)");
-        if (inputFile.isEmpty()) {
-            QMessageBox::warning(this, "Error", "No input file selected!");
-            return;
-        }
+    QString inputFile = QFileDialog::getOpenFileName(this, "Select Input XML File", "C://", "XML Files (*.xml);;All Files (*.*)");
+    if (inputFile.isEmpty()) {
+        QMessageBox::warning(this, "Error", "No input file selected!");
+        return;
+    }
 
-        QString outputFile = "temp_minified.xml"; // Temporary file for minified output
-        std::string inputPath = inputFile.toStdString();
-        std::string outputPath = outputFile.toStdString();
+    QString outputFile = "temp_minified.xml"; // Temporary file for minified output
+    std::string inputPath = inputFile.toStdString();
+    std::string outputPath = outputFile.toStdString();
 
-        // Call the minifyXML function
-        minifyXML(inputPath, outputPath);
+    // Call the minifyXML function
+    minifyXML(inputPath, outputPath);
 
-        // Read the minified XML from the output file
-        QFile file(QString::fromStdString(outputPath));
-        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            QMessageBox::warning(this, "Error", "Failed to open minified XML file!");
-            return;
-        }
+    // Read the minified XML from the output file
+    QFile file(QString::fromStdString(outputPath));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Failed to open minified XML file!");
+        return;
+    }
 
-        QTextStream in(&file);
-        QString minifiedContent = in.readAll();
-        file.close();
+    QTextStream in(&file);
+    QString minifiedContent = in.readAll();
+    file.close();
 
-        // Display the minified XML content in QPlainTextEdit
-        ui->plainTextEdit_2->setPlainText(minifiedContent);
+    // Display the minified XML content in QPlainTextEdit
+    ui->plainTextEdit_2->setPlainText(minifiedContent);
 
-        // Optionally remove the temporary output file
-        QFile::remove(outputFile);
+    // Optionally remove the temporary output file
+    QFile::remove(outputFile);
 
-        QMessageBox::information(this, "Success", "XML file has been minified and displayed successfully!");
+    QMessageBox::information(this, "Success", "XML file has been minified and displayed successfully!");
 
 
 }
@@ -338,4 +340,195 @@ void MainWindow::on_Decompress_Button_clicked() {
     QMessageBox::information(this, "Success", "The XML file has been decompressed successfully!");
 }
 */
+
+
+void MainWindow::on_MostInfluential_clicked()
+{
+    // Open file dialog to select XML file
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    QFile file(xml_file);
+
+    // Check if file can be opened
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Error", "File could not be opened.");
+        return;
+    }
+
+    // Read file content and display in plainTextEdit
+    QTextStream in(&file);
+    QString text = in.readAll();
+    std::string xml_content = text.toStdString();
+    size_t pos = 0;
+    TreeNode* node = parseXML(xml_content,pos);
+    map<int, vector<int>>graph;
+    map<int,std::string> idNameMap;
+    buildGraph(node,graph);
+    buildIdNameMap(node,idNameMap);
+    vector<pair<int, std::string>> most_influential;
+    most_influential = findMostInfluentialUsers(graph,idNameMap);
+    QString result = "Most Influential User:\n*******************\n";
+    for (const auto& [id, name] : most_influential) {
+        result += QString("ID: %1, Name: %2\n").arg(id).arg(QString::fromStdString(name));
+    }
+
+    // Display the result in plainTextEdit
+    ui->plainTextEdit_2->setPlainText(result);
+
+    QMessageBox::information(this, "Success", "Most influential users have been displayed!");
+
+}
+
+
+void MainWindow::on_MostActive_clicked()
+{
+    // Open file dialog to select XML file
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    QFile file(xml_file);
+
+    // Check if file can be opened
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Error", "File could not be opened.");
+        return;
+    }
+
+    // Read file content and display in plainTextEdit
+    QTextStream in(&file);
+    QString text = in.readAll();
+    std::string xml_content = text.toStdString();
+    size_t pos = 0;
+    TreeNode* node = parseXML(xml_content,pos);
+    map<int, vector<int>>graph;
+    map<int,std::string> idNameMap;
+    map<int, vector<int>> followingMap;
+    buildGraph(node,graph);
+    buildIdNameMap(node,idNameMap);
+    buildFollowingMap(graph,followingMap);
+    vector<pair<int, string>> most_active;
+    most_active = findMostActiveUsers(graph, idNameMap, followingMap);
+    QString result = "Most Active User:\n*******************\n";
+    for (const auto& [id, name] : most_active) {
+        result += QString("ID: %1, Name: %2\n").arg(id).arg(QString::fromStdString(name));
+    }
+
+    // Display the result in plainTextEdit
+    ui->plainTextEdit_2->setPlainText(result);
+
+    QMessageBox::information(this, "Success", "Most active users have been displayed!");
+}
+
+
+void MainWindow::on_MutualFollowers_clicked()
+{
+    // Open file dialog to select XML file
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    QFile file(xml_file);
+
+    // Check if file can be opened
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Error", "File could not be opened.");
+        return;
+    }
+
+    // Read file content
+    QTextStream in(&file);
+    QString text = in.readAll();
+    std::string xml_content = text.toStdString();
+    size_t pos = 0;
+    TreeNode* node = parseXML(xml_content, pos);
+
+    // Build necessary data structures
+    map<int, vector<int>> graph;
+    map<int, std::string> idNameMap;
+    map<int, vector<int>> followingMap;
+    buildGraph(node, graph);
+    buildIdNameMap(node, idNameMap);
+    buildFollowingMap(graph, followingMap);
+
+    // Prompt user for IDs
+    bool ok;
+    QString input = QInputDialog::getText(this, "Enter User IDs",
+                                          "Enter comma-separated User IDs:",
+                                          QLineEdit::Normal, "", &ok);
+    if (!ok || input.isEmpty()) {
+        QMessageBox::information(this, "Info", "No IDs provided.");
+        return;
+    }
+
+    // Parse input into a vector of integers
+    std::vector<int> users;
+    for (const auto& id_str : input.split(",")) {
+        bool conversionOk;
+        int id = id_str.trimmed().toInt(&conversionOk);
+        if (conversionOk) {
+            users.push_back(id);
+        }
+    }
+
+    // Find mutual followers
+    std::vector<int> mutual_followers = findMutualFollowers(graph, users, users.size());
+
+    // Prepare result string
+    QString result = "Mutual Followers:\n";
+    for (int id : mutual_followers) {
+        result += QString::number(id) + " (" + QString::fromStdString(idNameMap[id]) + ")\n";
+    }
+
+    // Display result
+    if (mutual_followers.empty()) {
+        result = "No mutual followers found.";
+    }
+    ui->plainTextEdit_2->setPlainText(result);
+}
+
+
+
+void MainWindow::on_Suggest_clicked()
+{
+    // Open file dialog to select XML file
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    QFile file(xml_file);
+
+    // Check if file can be opened
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Error", "File could not be opened.");
+        return;
+    }
+
+    // Read file content
+    QTextStream in(&file);
+    QString text = in.readAll();
+    std::string xml_content = text.toStdString();
+    size_t pos = 0;
+    TreeNode* node = parseXML(xml_content, pos);
+
+    // Prompt user for IDs
+    bool ok;
+    QString input = QInputDialog::getText(this, "Enter User ID",
+                                          "Enter User ID:",
+                                          QLineEdit::Normal, "", &ok);
+    int userId = input.toInt();
+    if (!ok || input.isEmpty()) {
+        QMessageBox::information(this, "Info", "No IDs provided.");
+        return;
+    }
+
+    map<int, vector<int>> graph;
+    map<int, std::string> idNameMap;
+    vector<int> suggested_users;
+    buildGraph(node, graph);
+    buildIdNameMap(node, idNameMap);
+
+    suggested_users = suggestUsersToFollowForId(graph,userId,idNameMap);
+
+    QString result = "Suggested Users:\n";
+    for(int id:suggested_users)
+        result += QString::number(id) + " (" + QString::fromStdString(idNameMap[id]) + ")\n";
+
+
+    // Display result
+    if (suggested_users.empty()) {
+        result = "No mutual followers found.";
+    }
+    ui->plainTextEdit_2->setPlainText(result);
+}
 

@@ -42,15 +42,21 @@ public:
     QPlainTextEdit *plainTextEdit;
     QLabel *label_3;
     QGridLayout *gridLayout;
+    QPushButton *MutualFollowers;
     QPushButton *ConvertToJSON_Button;
-    QPushButton *Prettify_Button;
-    QPlainTextEdit *plainTextEdit_2;
-    QPushButton *Compress_Button;
-    QPushButton *Minify_Button_2;
-    QPushButton *Validate_Button;
-    QPushButton *Decompress_Button;
-    QLabel *label_4;
     QPushButton *Minify_Button;
+    QPushButton *Prettify_Button;
+    QPushButton *MostInfluential;
+    QLabel *OperationOutput;
+    QPushButton *Compress_Button;
+    QPushButton *Decompress_Button;
+    QPushButton *pushButton_4;
+    QPushButton *MostActive;
+    QPushButton *Validate_Button;
+    QPlainTextEdit *plainTextEdit_2;
+    QPushButton *Suggest;
+    QPushButton *SearchByWord;
+    QPushButton *SearchByTopic;
     QPushButton *Save_Button;
     QMenuBar *menubar;
     QMenu *menuSave;
@@ -108,50 +114,80 @@ public:
 
         gridLayout = new QGridLayout();
         gridLayout->setObjectName("gridLayout");
+        MutualFollowers = new QPushButton(layoutWidget);
+        MutualFollowers->setObjectName("MutualFollowers");
+
+        gridLayout->addWidget(MutualFollowers, 2, 2, 1, 1);
+
         ConvertToJSON_Button = new QPushButton(layoutWidget);
         ConvertToJSON_Button->setObjectName("ConvertToJSON_Button");
 
-        gridLayout->addWidget(ConvertToJSON_Button, 2, 0, 1, 4);
+        gridLayout->addWidget(ConvertToJSON_Button, 1, 0, 1, 1);
+
+        Minify_Button = new QPushButton(layoutWidget);
+        Minify_Button->setObjectName("Minify_Button");
+
+        gridLayout->addWidget(Minify_Button, 0, 0, 1, 1);
 
         Prettify_Button = new QPushButton(layoutWidget);
         Prettify_Button->setObjectName("Prettify_Button");
 
-        gridLayout->addWidget(Prettify_Button, 0, 2, 1, 1);
+        gridLayout->addWidget(Prettify_Button, 0, 1, 1, 2);
 
-        plainTextEdit_2 = new QPlainTextEdit(layoutWidget);
-        plainTextEdit_2->setObjectName("plainTextEdit_2");
+        MostInfluential = new QPushButton(layoutWidget);
+        MostInfluential->setObjectName("MostInfluential");
 
-        gridLayout->addWidget(plainTextEdit_2, 4, 0, 1, 4);
+        gridLayout->addWidget(MostInfluential, 2, 0, 1, 1);
+
+        OperationOutput = new QLabel(layoutWidget);
+        OperationOutput->setObjectName("OperationOutput");
+
+        gridLayout->addWidget(OperationOutput, 4, 0, 1, 4, Qt::AlignmentFlag::AlignHCenter);
 
         Compress_Button = new QPushButton(layoutWidget);
         Compress_Button->setObjectName("Compress_Button");
 
         gridLayout->addWidget(Compress_Button, 1, 3, 1, 1);
 
-        Minify_Button_2 = new QPushButton(layoutWidget);
-        Minify_Button_2->setObjectName("Minify_Button_2");
+        Decompress_Button = new QPushButton(layoutWidget);
+        Decompress_Button->setObjectName("Decompress_Button");
 
-        gridLayout->addWidget(Minify_Button_2, 1, 0, 1, 1);
+        gridLayout->addWidget(Decompress_Button, 1, 1, 1, 2);
+
+        pushButton_4 = new QPushButton(layoutWidget);
+        pushButton_4->setObjectName("pushButton_4");
+
+        gridLayout->addWidget(pushButton_4, 2, 3, 1, 1);
+
+        MostActive = new QPushButton(layoutWidget);
+        MostActive->setObjectName("MostActive");
+
+        gridLayout->addWidget(MostActive, 2, 1, 1, 1);
 
         Validate_Button = new QPushButton(layoutWidget);
         Validate_Button->setObjectName("Validate_Button");
 
         gridLayout->addWidget(Validate_Button, 0, 3, 1, 1);
 
-        Decompress_Button = new QPushButton(layoutWidget);
-        Decompress_Button->setObjectName("Decompress_Button");
+        plainTextEdit_2 = new QPlainTextEdit(layoutWidget);
+        plainTextEdit_2->setObjectName("plainTextEdit_2");
 
-        gridLayout->addWidget(Decompress_Button, 1, 1, 1, 2);
+        gridLayout->addWidget(plainTextEdit_2, 5, 0, 1, 4);
 
-        label_4 = new QLabel(layoutWidget);
-        label_4->setObjectName("label_4");
+        Suggest = new QPushButton(layoutWidget);
+        Suggest->setObjectName("Suggest");
 
-        gridLayout->addWidget(label_4, 3, 0, 1, 4, Qt::AlignmentFlag::AlignHCenter);
+        gridLayout->addWidget(Suggest, 3, 0, 1, 1);
 
-        Minify_Button = new QPushButton(layoutWidget);
-        Minify_Button->setObjectName("Minify_Button");
+        SearchByWord = new QPushButton(layoutWidget);
+        SearchByWord->setObjectName("SearchByWord");
 
-        gridLayout->addWidget(Minify_Button, 0, 0, 1, 2);
+        gridLayout->addWidget(SearchByWord, 3, 1, 1, 1);
+
+        SearchByTopic = new QPushButton(layoutWidget);
+        SearchByTopic->setObjectName("SearchByTopic");
+
+        gridLayout->addWidget(SearchByTopic, 3, 2, 1, 1);
 
 
         verticalLayout->addLayout(gridLayout);
@@ -189,14 +225,20 @@ public:
         Browse_Button->setText(QCoreApplication::translate("MainWindow", "Browse", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "File Content Browsed", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Choose an operation", nullptr));
+        MutualFollowers->setText(QCoreApplication::translate("MainWindow", "Find Mutual Followers", nullptr));
         ConvertToJSON_Button->setText(QCoreApplication::translate("MainWindow", "Convert XML to JSON", nullptr));
-        Prettify_Button->setText(QCoreApplication::translate("MainWindow", "Prettify", nullptr));
-        Compress_Button->setText(QCoreApplication::translate("MainWindow", "Compress", nullptr));
-        Minify_Button_2->setText(QCoreApplication::translate("MainWindow", "Minify", nullptr));
-        Validate_Button->setText(QCoreApplication::translate("MainWindow", "Validate", nullptr));
-        Decompress_Button->setText(QCoreApplication::translate("MainWindow", "Decompress", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", "Output of Operation on XML File", nullptr));
         Minify_Button->setText(QCoreApplication::translate("MainWindow", "Minify", nullptr));
+        Prettify_Button->setText(QCoreApplication::translate("MainWindow", "Prettify", nullptr));
+        MostInfluential->setText(QCoreApplication::translate("MainWindow", "Find Most Influential User", nullptr));
+        OperationOutput->setText(QCoreApplication::translate("MainWindow", "Output of Operation on XML File", nullptr));
+        Compress_Button->setText(QCoreApplication::translate("MainWindow", "Compress", nullptr));
+        Decompress_Button->setText(QCoreApplication::translate("MainWindow", "Decompress", nullptr));
+        pushButton_4->setText(QCoreApplication::translate("MainWindow", "Draw Graph", nullptr));
+        MostActive->setText(QCoreApplication::translate("MainWindow", "Find Most Active User", nullptr));
+        Validate_Button->setText(QCoreApplication::translate("MainWindow", "Validate", nullptr));
+        Suggest->setText(QCoreApplication::translate("MainWindow", "Suggest", nullptr));
+        SearchByWord->setText(QCoreApplication::translate("MainWindow", "Search by word", nullptr));
+        SearchByTopic->setText(QCoreApplication::translate("MainWindow", "Search by topic", nullptr));
         Save_Button->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
         menuSave->setTitle(QCoreApplication::translate("MainWindow", "Save", nullptr));
     } // retranslateUi
