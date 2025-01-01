@@ -100,6 +100,13 @@ int main(int argc ,char*argv[]) {
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
+#include <map>
+#include <fstream>
+#include <sstream>
+#include <set>
+#include <algorithm>
+#include "visualization.h"
 #include "xml_tree.h"
 #include "XML_to_JSON.h"
 #include "XML_minifying.h"

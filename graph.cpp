@@ -1,25 +1,7 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <map>
-#include <fstream>
-#include <sstream>
-#include <set>
-#include <algorithm>
-#include "visualization.h"
-#include "XML_minifying.h"
-#include "file_processing.h"
-#include "validate_fix.h"
-using namespace std;
 
-// Structure to represent a node in the tree
-struct TreeNode {
-    string tagName;
-    string value;
-    vector<TreeNode*> children;
 
-    TreeNode(string name, string val = "") : tagName(name), value(val) {}
-};
+
+
 
 // Function to parse XML and construct a tree
 TreeNode* parseXML(const string& xml, size_t& pos) {
