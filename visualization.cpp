@@ -2,7 +2,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
-#include "file_processing.cpp"
+#include "file_processing.h"
 
 
 int visualize_graph(const std::map<int, std::vector<int>>& graph, std::string output_file) {
@@ -19,7 +19,7 @@ int visualize_graph(const std::map<int, std::vector<int>>& graph, std::string ou
     
     write_file("digraph {\n" + structure.str() + "}", "graph.gv");
 
-    return system(("dot -Tpng graph.gv -o " + output_file + ".png").data());
+    return system(("start graphviz/dot -Tpng graph.gv -o " + output_file + ".png").data());
 }
 
 int visualize_graph(const std::map<int, std::vector<int>>& graph) {
