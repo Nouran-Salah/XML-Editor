@@ -590,20 +590,31 @@ void MainWindow::on_SearchByWord_clicked()
 
 void MainWindow::on_SearchByTopic_clicked()
 {
-    // Open file dialog to select XML file
-    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
-    QFile file(xml_file);
-
-    // Check if file can be opened
-    if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        QMessageBox::warning(this, "Error", "File could not be opened.");
+    QString inputFile = QFileDialog::getOpenFileName(this, "Select Input XML File", "D://", "XML Files (*.xml);;All Files (*.*)");
+    if (inputFile.isEmpty()) {
+        QMessageBox::warning(this, "Error", "No input file selected!");
         return;
     }
 
-    // Read file content
+    QString outputFile = "searchByTopic_minified.xml"; // Temporary file for minified output
+    std::string inputPath = inputFile.toStdString();
+    std::string outputPath = outputFile.toStdString();
+
+    // Call the minifyXML function
+    minifyXML(inputPath, outputPath);
+
+    // Read the minified XML from the output file
+    QFile file(QString::fromStdString(outputPath));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::warning(this, "Error", "Failed to open minified XML file!");
+        return;
+    }
+
     QTextStream in(&file);
-    QString text = in.readAll();
-    std::string xml_content = text.toStdString();
+    QString minifiedContent = in.readAll();
+    file.close();
+
+    std::string xml_content = minifiedContent.toStdString();
     size_t pos = 0;
     TreeNode* root = parseXML(xml_content, pos);
 
