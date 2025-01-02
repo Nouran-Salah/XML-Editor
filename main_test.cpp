@@ -86,13 +86,10 @@ int main(int argc, char* argv[]) {
         cout << "Json file saved to OutputFile" << endl;
 
     } else if (command  == "compress") {
-        string compressedXML = ApplyBPE(corrected_xml(XML), dictionary);
-        write_file(compressedXML, compressedFile);
+        writeCompressedFile(XML, argv[5]);
 
     } else if (command == "decompress") {
-        string compressedXML = ApplyBPE(corrected_xml(XML), dictionary);
-        string decompressedXML = Decompress(compressedXML, dictionary);
-        write_file(decompressedXML, OutputFile);
+        write_file(readCompressedFile(argv[3]), argv[5]);
     }
     else if (command == "most_influencer") {
         vector<pair<int, string>> mostInfluentialUsers = findMostInfluentialUsers(graph, idNameMap);
