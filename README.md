@@ -70,7 +70,7 @@
 ### Demonstration Links
 - **Command Line Mode**: [View Demo](https://drive.google.com/file/d/1n72GIMFJqBsHLI7SXZCBCxUnTMLjd1BX/view?usp=drive_link)
 - **GUI Mode**: [View Demo](https://drive.google.com/file/d/1KoW-f0Oz_Hs77si9CYtLAzwSz262S4Xt/view?usp=drive_link)
-
+- **Project Report**: [View Report](https://drive.google.com/file/d/1vMgflwulpS0mCYdI4IGalR9BFQ20vMRb/view?usp=drive_link)
 
 
 ### Why This Project?
