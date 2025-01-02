@@ -71,6 +71,67 @@ void MainWindow::on_Save_Button_clicked()
     compressed_file.close();
 }
 
+/*
+void MainWindow::on_Compress_Button_clicked()
+{
+    QString inputFile = QFileDialog::getOpenFileName(this, "Select Input XML File", "C://", "XML Files (*.xml);;All Files (*.*)");
+    if (inputFile.isEmpty()) {
+        QMessageBox::warning(this, "Error", "No input file selected!");
+        return;
+    }
+
+    QFile file(inputFile);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "Failed to open the file for reading!");
+        return;
+    }
+
+    QString fileContent = file.readAll(); // Read the file content as QString
+    file.close();
+
+    // Convert QString content to std::string
+    std::string xmlContent = fileContent.toStdString();
+
+    QString outputFile = QFileDialog::getSaveFileName(this, "Save Compressed File", "compressed_output.txt", "Text Files (*.txt);;All Files (*.*)");
+    if (outputFile.isEmpty()) {
+        QMessageBox::warning(this, "Error", "No output file selected!");
+        return;
+    }
+
+    try {
+        // Compress and save to file
+        writeCompressedFile(xmlContent, outputFile.toStdString());
+        QMessageBox::information(this, "Success", "XML file has been compressed and saved successfully!");
+    } catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Compression failed: %1").arg(e.what()));
+    }
+}
+
+void MainWindow::on_Decompress_Button_clicked()
+{
+    QString inputFile = QFileDialog::getOpenFileName(this, "Select Compressed File", "C://", "Text Files (*.txt);;All Files (*.*)");
+    if (inputFile.isEmpty()) {
+        QMessageBox::warning(this, "Error", "No input file selected!");
+        return;
+    }
+
+    try {
+        // Read compressed content and decompress it
+        std::string decompressedString = readCompressedFile(inputFile.toStdString());
+
+        // Display decompressed content in the text editor
+        QString decompressedContent = QString::fromStdString(decompressedString);
+        ui->plainTextEdit_2->setPlainText(decompressedContent);
+
+        QMessageBox::information(this, "Success", "File has been decompressed and displayed successfully!");
+    } catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", QString("Decompression failed: %1").arg(e.what()));
+    }
+}*/
+
+
+
+
 void MainWindow::on_Compress_Button_clicked()
 {
     QString inputFile = QFileDialog::getOpenFileName(this, "Select Input XML File", "C://", "XML Files (*.xml);;All Files (*.*)");
@@ -256,7 +317,7 @@ void MainWindow::on_ConvertToJSON_Button_clicked()
     QString text = in.readAll();
     std::string xml_Str = text.toStdString();
     std::string json_Str;
-    convertXMLToJSON(xml_Str,json_Str);
+    json_Str = convertXMLToJSON(xml_Str);
     QString json_qStr = QString::fromStdString(json_Str);
 
     ui->plainTextEdit_2->setPlainText(json_qStr);

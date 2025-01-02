@@ -12,7 +12,7 @@ std::string xmlString(const std::string& xml);
 void printJsonTree(const Node* node, int level, std::string& jsonBuilder, bool is_multilevel);
 
 // Converts an XML string to a JSON string and prints it to the console
-void convertXMLToJSON(const std::string& xml, std::string& jsonString);
+std::string convertXMLToJSON(const std::string& xml);
 
 #endif // XML_TO_JSON_H
 #pragma once

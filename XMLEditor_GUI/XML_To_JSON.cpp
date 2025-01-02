@@ -1,12 +1,8 @@
 #include <iostream>
-#include <iostream>
 #include <string>
 #include <vector>
 #include "xml_tree.h"
-#include "XML_To_JSON.h"
-
-using namespace std;
-
+#include "XML_to_JSON.h"
 
 std::string xmlString(const std::string& xml) {
     std::string xmlWithLines = xml;
@@ -47,7 +43,7 @@ void printJsonTree(const Node* node, int level, std::string& jsonBuilder, bool i
     }
 
     bool many_children_and_same_name = (node->children.size() > 1) &&
-                                       (node->children[0]->getTagName() == node->children[1]->getTagName());
+        (node->children[0]->getTagName() == node->children[1]->getTagName());
 
     if (!many_children_and_same_name) {
         jsonBuilder += "{\n";
@@ -71,13 +67,16 @@ void printJsonTree(const Node* node, int level, std::string& jsonBuilder, bool i
         jsonBuilder += "\n";
     }
     jsonBuilder += indent + indentation + "]\n" + indent + "}";
-    jsonBuilder = "{\n" + jsonBuilder + "\n}\n";
 }
 
-void convertXMLToJSON(const std::string& xml, std::string& jsonString) {
+std::string convertXMLToJSON(const std::string& xml) {
     std::string xml_string = xmlString(xml);
     Node* root = parseXML(xml_string);
 
+    std::string jsonString;
+    jsonString += "{\n";
     printJsonTree(root, 1, jsonString, false);
+    jsonString += "}\n";
+    return jsonString;
 
 }
