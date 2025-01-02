@@ -2,20 +2,6 @@
 
 ## CSE331: Data Structures and Algorithms
 
-### Project Description
-📜 This project involves creating an XML Editor that can parse, visualize, and perform operations on XML files. The editor will feature both command-line and GUI-based interaction modes, focusing on data structure implementation and optimization.
-
-### Guidelines
-✅ Form teams of 6 to 8 members.
-✅ Fill out the [team formation form](https://forms.gle/mdussUF5t5pw5yeR8) by Saturday, November 30th (one submission per team). Late submissions will incur penalties.
-✅ Allowed data structures: arrays, dynamic arrays (vectors), linked lists, stacks, queues, priority queues (heap).
-✅ You must implement any other data structures from scratch.
-✅ Use GitHub/GitLab for project management. Ensure repositories are private.
-
-**Resources**:
-- [Git Course](https://www.udacity.com/course/version-control-with-git--ud123)
-- [Writing READMEs](https://www.udacity.com/course/writing-readmes--ud777)
-
 ### Functionalities
 #### Basic Features
 1. **XML Consistency Check** 🛠️
