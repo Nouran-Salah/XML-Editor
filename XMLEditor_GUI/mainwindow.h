@@ -46,8 +46,6 @@ private slots:
 
     void on_SearchByTopic_clicked();
 
-    void on_pushButton_4_clicked();
-
     void on_DrawGraph_clicked();
 
 private:

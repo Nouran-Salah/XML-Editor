@@ -196,43 +196,7 @@ string toLower(const string& str) {
     return lower;
 }
 
-void searchByTopicHelper(TreeNode* root, const string& topic, vector<string>& bodies) {
-    string lowerTopic = toLower(topic);  // Convert topic to lowercase for case-insensitive search
-
-    // Check if the current node is a post
-    if (root->tagName == "post") {
-        for (TreeNode* child : root->children) {
-            // If the child tag is "body" and the body contains the topic word
-            if (child->tagName == "body" && toLower(child->value).find(lowerTopic) != string::npos) {
-                bodies.push_back(child->value);  // Add the body text to the result
-            }
-        }
-    }
-
-    // Continue searching in all child nodes
-    for (TreeNode* child : root->children) {
-        searchByTopicHelper(child, topic, bodies);  // Recursively search through all children
-    }
-}
-
-
-vector<string> searchByTopic(TreeNode* root, const string& word)
-{
-    vector<string> bodies;
-    searchByWordHelper(root, word, bodies);
-    return bodies;
-    if (bodies.empty()) {
-        cout << "The word '" << word << "' was not found in any post." << endl;
-    } else {
-        cout << "Posts mentioning word '" << word << "':\n";
-        for (size_t i = 0; i < bodies.size(); ++i) {
-            cout << "Post " << (i + 1) << ": " << bodies[i] << endl;
-        }
-    }
-}
-
-
-
+// Function to search for a word in the body of posts and return results
 void searchByWordHelper(TreeNode* root, const string& word, vector<string>& bodies) {
     string lowerWord = toLower(word);
     if (root->tagName == "post") {
@@ -248,7 +212,47 @@ void searchByWordHelper(TreeNode* root, const string& word, vector<string>& bodi
     }
 }
 
-vector<string> searchByWord(TreeNode* root, const string& word)
+
+// Function to search for a specific topic in the posts and return results
+void searchByTopicHelper(TreeNode* root, const string& topic, vector<string>& bodies) {
+    string lowerTopic = toLower(topic);
+
+    if (root->tagName == "post") {
+        bool topicFound = false;
+
+        for (TreeNode* child : root->children) {
+            if (child->tagName == "topics") {
+                for (TreeNode* topicNode : child->children) {
+                    if (topicNode->tagName == "topic" && toLower(topicNode->value) == lowerTopic) {
+                        topicFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (topicFound) {
+            for (TreeNode* child : root->children) {
+                if (child->tagName == "body") {
+                    bodies.push_back(child->value);
+                }
+            }
+        }
+    }
+
+    for (TreeNode* child : root->children) {
+        searchByTopicHelper(child, topic, bodies);
+    }
+}
+
+vector<string> searchByTopic(TreeNode* root, const string& topic) {
+    vector<string> bodies;
+    searchByTopicHelper(root, topic, bodies);
+    return bodies;
+}
+
+
+
+vector<string> searchByWordHelper(TreeNode* root, const string& word)
 {
     vector<string> bodies;
     searchByWordHelper(root, word, bodies);
@@ -261,4 +265,11 @@ vector<string> searchByWord(TreeNode* root, const string& word)
             cout << "Post " << (i + 1) << ": " << bodies[i] << endl;
         }
     }
+}
+
+vector<string> searchByWord(TreeNode* root, const string& word)
+{
+    vector<string> bodies;
+    searchByWordHelper(root, word, bodies);
+    return bodies;
 }

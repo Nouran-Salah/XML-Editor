@@ -176,7 +176,6 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 11: _t->on_Suggest_clicked(); break;
         case 12: _t->on_SearchByWord_clicked(); break;
         case 13: _t->on_SearchByTopic_clicked(); break;
-        case 14: _t->on_pushButton_4_clicked(); break;
         case 15: _t->on_DrawGraph_clicked(); break;
         default: ;
         }

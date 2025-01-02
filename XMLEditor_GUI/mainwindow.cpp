@@ -16,16 +16,6 @@
 #include "graph_visualization.h"
 #include <QInputDialog>
 #include <map>
-#include "file_processing.h"
-#include <QPixmap>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QLabel>
-#include <QPixmap>
-#include <map>
-#include <vector>
-#include <string>
-#include <sstream>
 using namespace std;
 
 std::unordered_map<string, string> dict;
@@ -564,6 +554,11 @@ void MainWindow::on_SearchByWord_clicked()
     TreeNode* root = parseXML(xml_content, pos);
     vector<string> bodies;
 
+    if (!root) {
+        QMessageBox::warning(this, "Error", "Failed to parse XML file.");
+        return;
+    }
+
     // Prompt user for the search word
     bool ok;
     QString word = QInputDialog::getText(this, "Search a Word",
@@ -611,95 +606,61 @@ void MainWindow::on_SearchByTopic_clicked()
     std::string xml_content = text.toStdString();
     size_t pos = 0;
     TreeNode* root = parseXML(xml_content, pos);
-    vector <string> bodies;
-    // Prompt user for the search word
+
+    // Check if root is valid
+    if (!root) {
+        QMessageBox::warning(this, "Error", "Failed to parse XML file.");
+        return;
+    }
+
+    // Prompt user for the topic
     bool ok;
     QString topic = QInputDialog::getText(this, "Search a Topic",
-                                         "Enter a topic to search for:",
-                                         QLineEdit::Normal, "", &ok);
+                                          "Enter a topic to search for:",
+                                          QLineEdit::Normal, "", &ok);
     if (!ok || topic.isEmpty()) {
         QMessageBox::information(this, "Info", "No topic provided.");
         return;
     }
 
-    // Search for bodies containing the word
-    bodies = searchByTopic(root, topic.toStdString());
+    // Search for bodies containing the topic
+    vector<string> bodies = searchByTopic(root, topic.toStdString());
 
     // Construct the result string
     QString result = "Posts containing the topic \"" + topic + "\":\n\n";
-    //if (bodies.empty()) {
+    if (bodies.empty()) {
         result += "No posts found containing the topic \"" + topic + "\".";
-    //} else {
+    } else {
         for (size_t i = 0; i < bodies.size(); ++i) {
             result += QString("Post %1: %2\n").arg(i + 1).arg(QString::fromStdString(bodies[i]));
         }
-    //}
+    }
 
     // Display the result in the plain text edit
     ui->plainTextEdit_2->setPlainText(result);
 }
 
 
-// Function to handle the click event for drawing a graph
-void MainWindow::on_DrawGraph_clicked() {
-    // Prompt the user to select a file containing the graph data
-    QString file_path = QFileDialog::getOpenFileName(this, "Open Graph Data File", "", "Text Files (*.txt);;All Files (*)");
+void MainWindow::on_DrawGraph_clicked()
+{
+    // Open file dialog to select XML file
+    QString xml_file = QFileDialog::getOpenFileName(this, "Open a file", "C://");
+    QFile file(xml_file);
 
-    if (file_path.isEmpty()) {
-        QMessageBox::information(this, "Info", "No file selected.");
+    // Check if file can be opened
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        QMessageBox::warning(this, "Error", "File could not be opened.");
         return;
     }
 
-    // Read the graph data from the file
-    std::map<int, std::vector<int>> graph;
-    try {
-        std::string file_content = read_file(file_path.toStdString());
-        std::istringstream stream(file_content);
-        int node, neighbor;
-
-        while (stream >> node) {
-            std::vector<int> neighbors;
-            std::string line;
-            std::getline(stream, line);
-            std::istringstream line_stream(line);
-
-            while (line_stream >> neighbor) {
-                neighbors.push_back(neighbor);
-            }
-            graph[node] = neighbors;
-        }
-    } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Error", "Failed to read the file: " + QString::fromStdString(e.what()));
-        return;
-    }
-
-    // Visualize the graph
-    QString output_file = QFileDialog::getSaveFileName(this, "Save Graph Output", "", "PNG Files (*.png)");
-    if (output_file.isEmpty()) {
-        QMessageBox::information(this, "Info", "No output file selected.");
-        return;
-    }
-
-    try {
-        int result = visualize_graph(graph, output_file.toStdString());
-        if (result != 0) {
-            QMessageBox::critical(this, "Error", "Graph visualization failed. Ensure Graphviz is installed and accessible.");
-            return;
-        }
-    } catch (const std::exception& e) {
-        QMessageBox::critical(this, "Error", "Failed to visualize the graph: " + QString::fromStdString(e.what()));
-        return;
-    }
-
-    // Display the resulting image
-    QPixmap graph_image(output_file);
-    if (graph_image.isNull()) {
-        QMessageBox::critical(this, "Error", "Failed to load the graph image.");
-        return;
-    }
-
-    ui->graphDisplayLabel->setPixmap(graph_image);
-    ui->graphDisplayLabel->setScaledContents(true); // Scale the image to fit the label
-    QMessageBox::information(this, "Success", "Graph visualization completed and displayed.");
+    // Read file content
+    QTextStream in(&file);
+    QString text = in.readAll();
+    std::string xml_content = text.toStdString();
+    size_t pos = 0;
+    TreeNode* node = parseXML(xml_content, pos);
+    map<int, vector<int>> graph;
+    buildGraph(node, graph);
+    visualize_graph(graph);
 }
 
