@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <sstream>
+#include <fstream>
+
 using namespace std;
 
 pair<string, int> FindMostFrequentPair(const string& XMLContent) // Find the most frequent pair in the XML File
@@ -119,3 +122,49 @@ string Decompress(const string& NewCompressedXML, unordered_map<string, string>&
 	}
 	return DecompressedXML;
 }
+
+
+void writeCompressedFile(string compressed, unordered_map<string, string> dictioninary, string output_name) {
+	
+	ofstream file(output_name);
+
+	for(auto& p : dictioninary) {
+		file << p.first << ' ' << p.second << "\n";
+	}
+
+	file << "<<<\n";
+	file << compressed;
+	file.close();
+	
+}
+
+void writeCompressedFile(string pure_xml, string output_name) {
+	
+	unordered_map<string, string> table;
+	string compressed = ApplyBPE(pure_xml, table);
+
+	writeCompressedFile(compressed, table, output_name);
+	
+}
+
+string readCompressedFile(string file_name) {
+	ifstream file(file_name);
+	unordered_map<string, string> table;
+	string key, value;
+	file >> key;
+	
+	while(key != "<<<") {
+
+		getline(file, value);
+		table[key] = value.substr(1, value.size()-1);
+		file >> key;
+	}
+
+	stringstream compressed;
+	compressed << file.rdbuf();
+
+	return Decompress(compressed.str(), table);
+
+}
+
+
